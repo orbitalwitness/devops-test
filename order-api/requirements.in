@@ -1,0 +1,5 @@
+flask
+flask-rq2
+pyjwt
+redis
+rq
