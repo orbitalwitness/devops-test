@@ -2,7 +2,7 @@
 
 ## Background
 
-Orbital Witness is a building a service-oriented architecture.
+Orbital Witness is a building a document ordering and processing system using software-oriented architecture principles.
 
 As a DevOps engineer, you are tasked with improving the engineering efficiency by producing automation tools
 that provision services in an efficient, predictable and reproducible way.
