@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os
+import uuid
 
 import jwt
 from flask import Flask, jsonify
@@ -36,13 +37,19 @@ def create_order():
         return jsonify(error=str(exc)), 422
     else:
         if payload["can_order"]:
+            order_id = str(uuid.uuid4())
+
+            # TODO: Download documents from an External API
+
             default_queue.enqueue(
-                "__main__.record_order",
+                "__main__.ocr_document",
+                order_id=order_id,
                 user_id=payload["user_id"],
                 title_number=title_number,
                 document_type=document_type,
             )
             return jsonify(
+                order_id=order_id,
                 user_id=payload["user_id"],
                 title_number=title_number,
                 document_type=document_type,
