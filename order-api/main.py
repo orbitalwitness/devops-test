@@ -9,9 +9,7 @@ from flask import request
 from flask_rq2 import RQ
 
 app = Flask(__name__)
-rq = RQ(app)
-
-default_queue = rq.get_queue()
+rq = RQ()
 
 
 @app.route("/orders", methods=["POST"])
@@ -41,7 +39,7 @@ def create_order():
 
             # TODO: Download documents from an External API
 
-            default_queue.enqueue(
+            rq.get_queue().enqueue(
                 "__main__.ocr_document",
                 order_id=order_id,
                 user_id=payload["user_id"],
@@ -70,8 +68,9 @@ if __name__ == "__main__":
     jwt_secret: str = os.environ["JWT_SECRET"]
 
     # Flask config
-    app.config["RQ_DEFAULT_URL"] = redis_url
+    app.config["RQ_REDIS_URL"] = redis_url
     app.config["JWT_SECRET"] = jwt_secret
+    rq.init_app(app)
 
     # Run app
     app.run(host="0.0.0.0", port=http_port, threaded=True)
